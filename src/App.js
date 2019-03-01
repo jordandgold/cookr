@@ -11,23 +11,41 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-			<Container fluid="true">
-				<Row>
-					<Col xs="12" md="3">
-						<Button variant="primary">Add Recipe</Button>
-						<RecipeList />
-					</Col>
-					<Col xs="12" md="auto">
-						<RecipeDetail />
-					</Col>
-				</Row>
-			</Container>
-      </div>
-    );
-  }
+
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			isAddingRecipe: false,
+			selectedRecipe: false,
+			recipes: [
+				{
+					name: 'Black Bean Enchiladas',
+				},
+				{
+					name: 'Baked Falafel Wraps',
+				}
+			]
+		}
+	}
+
+	render() {
+	    return (
+	      <div className="App">
+				<Container fluid="true">
+					<Row>
+						<Col xs="12" md="3">
+							<Button variant="primary">Add Recipe</Button>
+							<RecipeList recipes={this.state.recipes} />
+						</Col>
+						<Col xs="12" md="auto">
+							<RecipeDetail recipe={this.state.selectedRecipe} />
+						</Col>
+					</Row>
+				</Container>
+	      </div>
+	    );
+	}
 }
 
 export default App;
