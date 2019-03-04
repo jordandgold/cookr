@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 // components
 import RecipeList from './RecipeList/RecipeList';
 import RecipeDetail from './RecipeDetail/RecipeDetail';
+import AddRecipe from './AddRecipe/AddRecipe';
 
 // bootstrap
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -35,7 +35,7 @@ class App extends Component {
 				<Container fluid="true">
 					<Row>
 						<Col xs="12" md="3">
-							<Button variant="primary">Add Recipe</Button>
+							<AddRecipe isAddingRecipe={this.state.isAddingRecipe} />
 							<RecipeList recipes={this.state.recipes} />
 						</Col>
 						<Col xs="12" md="auto">
