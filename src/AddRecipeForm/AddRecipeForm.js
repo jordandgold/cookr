@@ -11,6 +11,7 @@ class AddRecipeForm extends Component {
   render() {
     return (
       <form>
+        <h2>Add a recipe:</h2>
         <div className="input-group">
           <label>Recipe Name</label>
           <input type="text" name="recipeName" />

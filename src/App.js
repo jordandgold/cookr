@@ -69,7 +69,7 @@ class App extends Component {
       <div className="App">
         <Container fluid="true">
           <Row>
-            <Col xs="12" md="3">
+            <Col xs="12" md="4">
               <Button variant="primary" onClick={this.handleAddRecipe}>
                 Add Recipe
               </Button>
