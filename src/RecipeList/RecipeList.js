@@ -10,7 +10,14 @@ class RecipeList extends Component {
       <ul className="recipe-list list-group">
         <h4>My Recipes</h4>
         {this.props.recipes.map(recipe => {
-          return <li className="recipe-list list-group-item">{recipe.name}</li>;
+          return (
+            <li
+              className="recipe-list list-group-item"
+              onClick={() => this.props.onClick(recipe)}
+            >
+              {recipe.name}
+            </li>
+          );
         })}
       </ul>
     );
