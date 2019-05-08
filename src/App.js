@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 
 // components
-import RecipeList from "./RecipeList/RecipeList";
-import RecipeDetail from "./RecipeDetail/RecipeDetail";
-import AddRecipe from "./AddRecipe/AddRecipe";
+import RecipeList from "./components/RecipeList/RecipeList";
+import RecipeDetail from "./components/RecipeDetail/RecipeDetail";
+import AddRecipeForm from "./components/AddRecipeForm/AddRecipeForm";
 
 // bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import AddRecipeForm from "./AddRecipeForm/AddRecipeForm";
 
 class App extends Component {
   constructor(props) {
