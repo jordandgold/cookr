@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { selectRecipe } from "../actions/index";
+import { bindActionCreators } from "redux";
 
 class RecipeList extends Component {
   render() {
@@ -10,7 +12,7 @@ class RecipeList extends Component {
           return (
             <li
               className="recipe-list list-group-item"
-              onClick={() => this.props.onClick(recipe)}
+              onClick={() => this.props.selectRecipe(recipe)}
             >
               {recipe.name}
             </li>
@@ -27,4 +29,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(RecipeList);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ selectRecipe: selectRecipe }, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RecipeList);

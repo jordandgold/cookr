@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-
-// bootstrap
 import Button from "react-bootstrap/Button";
 
 class AddRecipeForm extends Component {

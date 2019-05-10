@@ -1,51 +1,20 @@
 import React, { Component } from "react";
 
-// components
-import RecipeList from "./components/RecipeList/RecipeList";
-import RecipeDetail from "./components/RecipeDetail/RecipeDetail";
-import AddRecipeForm from "./components/AddRecipeForm/AddRecipeForm";
-
-// bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+
+import RecipeList from "./containers/RecipeList";
+import RecipeDetail from "./containers/RecipeDetail";
+import AddRecipeForm from "./components/AddRecipeForm";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isAddingRecipe: false,
-      selectedRecipe: false,
-      recipes: [
-        {
-          name: "Black Bean Enchiladas",
-          ingredients: [
-            {
-              quanity: "1 can",
-              name: "black beans"
-            },
-            {
-              quanity: "10",
-              name: "tortillas"
-            }
-          ]
-        },
-        {
-          name: "Baked Falafel Wraps",
-          ingredients: [
-            {
-              quanity: "2 cups",
-              name: "dry chickpeas"
-            },
-            {
-              quanity: "1",
-              name: "yellow onion"
-            }
-          ]
-        }
-      ]
+      isAddingRecipe: false
     };
   }
 
@@ -60,7 +29,7 @@ class App extends Component {
   };
 
   handleChangeRecipe = recipe => {
-    this.setState({ isAddingRecipe: false, selectedRecipe: recipe });
+    this.setState({ isAddingRecipe: false });
   };
 
   render() {
@@ -78,10 +47,8 @@ class App extends Component {
               />
             </Col>
             <Col xs="12" md="auto">
-              {this.state.isAddingRecipe ? <AddRecipeForm /> : ""}
-              {this.state.selectedRecipe && (
-                <RecipeDetail recipe={this.state.selectedRecipe} />
-              )}
+              {this.state.isAddingRecipe && <AddRecipeForm />}
+              <RecipeDetail />
             </Col>
           </Row>
         </Container>
