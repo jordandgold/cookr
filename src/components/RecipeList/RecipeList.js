@@ -1,10 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class RecipeList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <ul className="recipe-list list-group">
@@ -24,4 +21,10 @@ class RecipeList extends Component {
   }
 }
 
-export default RecipeList;
+function mapStateToProps(state) {
+  return {
+    recipes: state.recipes
+  };
+}
+
+export default connect(mapStateToProps)(RecipeList);
