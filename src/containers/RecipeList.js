@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { selectRecipe } from "../actions/index";
-import { bindActionCreators } from "redux";
 
 class RecipeList extends Component {
   render() {
@@ -29,11 +28,7 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ selectRecipe: selectRecipe }, dispatch);
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { selectRecipe }
 )(RecipeList);

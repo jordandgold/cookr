@@ -1,14 +1,16 @@
-export default function() {
+import { IRecipe } from "./reducerTypes";
+
+export default function(): IRecipe[] {
   return [
     {
       name: "Black Bean Enchiladas",
       ingredients: [
         {
-          quanity: "1 can",
+          quantity: "1 can",
           name: "black beans"
         },
         {
-          quanity: "10",
+          quantity: "10",
           name: "tortillas"
         }
       ]
@@ -17,11 +19,11 @@ export default function() {
       name: "Baked Falafel Wraps",
       ingredients: [
         {
-          quanity: "2 cups",
+          quantity: "2 cups",
           name: "dry chickpeas"
         },
         {
-          quanity: "1",
+          quantity: "1",
           name: "yellow onion"
         }
       ]

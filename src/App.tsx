@@ -9,42 +9,41 @@ import RecipeList from "./containers/RecipeList";
 import RecipeDetail from "./containers/RecipeDetail";
 import AddRecipeForm from "./components/AddRecipeForm";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+interface IAppState {
+  isAddingRecipe: boolean
+  selectedRecipe: boolean
+}
 
-    this.state = {
-      isAddingRecipe: false
-    };
+class App extends Component<{}, IAppState> {
+  state: IAppState = {
+    isAddingRecipe: false,
+    selectedRecipe: false
   }
 
   handleAddRecipe = () => {
     this.setState({ isAddingRecipe: true, selectedRecipe: false });
   };
 
-  handleAddRecipeInput = e => {
-    let { name, value } = e.target;
-    if (name === "price") value = +value;
-    this.setState({ [name]: value });
-  };
+  // handleAddRecipeInput = e => {
+  //   let { name, value } = e.target;
+  //   if (name === "price") value = +value;
+  //   this.setState({ [name]: value });
+  // };
 
-  handleChangeRecipe = recipe => {
-    this.setState({ isAddingRecipe: false });
-  };
+  // handleChangeRecipe = (recipe: IRecipe) => {
+  //   this.setState({ isAddingRecipe: false });
+  // };
 
-  render() {
+  public render(): React.ReactElement<App> {
     return (
       <div className="App">
-        <Container fluid="true">
+        <Container fluid={true}>
           <Row>
             <Col xs="12" md="4">
               <Button variant="primary" onClick={this.handleAddRecipe}>
                 Add Recipe
               </Button>
-              <RecipeList
-                recipes={this.state.recipes}
-                onClick={this.handleChangeRecipe}
-              />
+              <RecipeList/>
             </Col>
             <Col xs="12" md="auto">
               {this.state.isAddingRecipe && <AddRecipeForm />}
