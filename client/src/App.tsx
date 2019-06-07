@@ -46,10 +46,14 @@ class App extends Component<{}, IAppState> {
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#browse">Browse Recipes</Nav.Link>
             <Nav.Link href="#my-recipes">My Recipes</Nav.Link>
-            <Button variant="primary" onClick={this.handleAddRecipe}>
-              Add Recipe
-            </Button>
           </Nav>
+          <Button
+            variant="primary"
+            className="ml-auto"
+            onClick={this.handleAddRecipe}
+          >
+            Add Recipe
+          </Button>
         </Navbar>
         <div className="main-container">
           <aside className="sidebar">
