@@ -1,4 +1,31 @@
+#root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.App {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+}
+
 .main-container {
-  padding-top: 48px;
-  padding-bottom: 48px;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  flex: 1;
+}
+
+.sidebar {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  height: 100%;
+  padding-top: 36px;
+  padding-bottom: 36px;
+}
+
+.main {
+  padding-top: 36px;
+  padding-bottom: 36px;
 }

@@ -40,28 +40,28 @@ class App extends Component<{}, IAppState> {
   public render(): React.ReactElement<App> {
     return (
       <div className="App">
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="light" variant="light">
           <Navbar.Brand href="#home">Cookr</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#browse">Browse Recipes</Nav.Link>
             <Nav.Link href="#my-recipes">My Recipes</Nav.Link>
+            <Button variant="primary" onClick={this.handleAddRecipe}>
+              Add Recipe
+            </Button>
           </Nav>
         </Navbar>
-        <Container fluid={true} className="main-container">
-          <Row>
-            <Col xs="12" md="3">
-              <Button variant="primary" onClick={this.handleAddRecipe}>
-                Add Recipe
-              </Button>
-              <RecipeList />
-            </Col>
-            <Col xs="12" md="auto">
+        <div className="main-container">
+          <aside className="sidebar">
+            <RecipeList />
+          </aside>
+          <section className="main">
+            <Container fluid={true}>
               {this.state.isAddingRecipe && <AddRecipeForm />}
               <RecipeDetail />
-            </Col>
-          </Row>
-        </Container>
+            </Container>
+          </section>
+        </div>
       </div>
     );
   }
