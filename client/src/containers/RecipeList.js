@@ -2,22 +2,24 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { selectRecipe } from "../actions/index";
 
+import ListGroup from "react-bootstrap/ListGroup";
+
 class RecipeList extends Component {
   render() {
     return (
-      <ul className="recipe-list list-group">
+      <ListGroup>
         <h4>My Recipes</h4>
         {this.props.recipes.map(recipe => {
           return (
-            <li
-              className="recipe-list list-group-item"
+            <ListGroup.Item
+              action
               onClick={() => this.props.selectRecipe(recipe)}
             >
               {recipe.name}
-            </li>
+            </ListGroup.Item>
           );
         })}
-      </ul>
+      </ListGroup>
     );
   }
 }
