@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.scss";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -8,9 +9,12 @@ import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
-import RecipeList from "./containers/RecipeList";
-import RecipeDetail from "./containers/RecipeDetail";
-import AddRecipeForm from "./components/AddRecipeForm";
+// import RecipeList from "./containers/RecipeList";
+// import RecipeDetail from "./containers/RecipeDetail";
+// import AddRecipeForm from "./components/AddRecipeForm";
+
+import Home from "./components/Home";
+import AddRecipe from "./components/AddRecipe";
 
 interface IAppState {
   isAddingRecipe: boolean;
@@ -40,32 +44,25 @@ class App extends Component<{}, IAppState> {
   public render(): React.ReactElement<App> {
     return (
       <div className="App">
-        <Navbar bg="light" variant="light">
-          <Navbar.Brand href="#home">Cookr</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#browse">Browse Recipes</Nav.Link>
-            <Nav.Link href="#my-recipes">My Recipes</Nav.Link>
-          </Nav>
-          <Button
-            variant="primary"
-            className="ml-auto"
-            onClick={this.handleAddRecipe}
-          >
-            Add Recipe
-          </Button>
-        </Navbar>
-        <div className="main-container">
-          <aside className="sidebar">
-            <RecipeList />
-          </aside>
-          <section className="main">
-            <Container fluid={true}>
-              {this.state.isAddingRecipe && <AddRecipeForm />}
-              <RecipeDetail />
-            </Container>
-          </section>
-        </div>
+        <Router>
+          <Navbar bg="light" variant="light">
+            <Navbar.Brand href="#home">Cookr</Navbar.Brand>
+            <Nav className="mr-auto">
+              <Link to="/">Home</Link>
+              <Link to="/browse">Browse</Link>
+              <Link to="/my-recipes">My Recipes</Link>
+            </Nav>
+            <Link to="/add-recipe">
+              <Button variant="primary" className="ml-auto">
+                Add Recipe
+              </Button>
+            </Link>
+          </Navbar>
+          <div className="main-container">
+            <Route path="/" exact component={Home} />
+            <Route path="/add-recipe" component={AddRecipe} />
+          </div>
+        </Router>
       </div>
     );
   }
