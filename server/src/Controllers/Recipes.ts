@@ -1,8 +1,8 @@
 import * as express from 'express';
-import { IRecipe } from 'Types'
 import { recipeModel } from '../Models'
+import { IController, IRecipe } from '../Types'
 
-export class RecipesController {
+export class RecipesController implements IController {
     public path = '/recipes'
     public router = express.Router()
      

@@ -4,7 +4,8 @@ import cors from "cors";
 import parser from "body-parser";
 import compression from "compression";
 
-import { IController } from 'Types'
+import { IController } from './Types'
+import { errorMiddleware } from './Middleware'
  
 class App {
   public app: express.Application;
@@ -17,8 +18,7 @@ class App {
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
     this.connectToDatabase()
-
-
+    this.initializeErrorHandling()
   }
  
   private initializeMiddlewares() {
@@ -32,6 +32,10 @@ class App {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router);
     });
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   private connectToDatabase() {

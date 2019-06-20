@@ -8,6 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const compression_1 = __importDefault(require("compression"));
+const Middleware_1 = require("./Middleware");
 class App {
     constructor(controllers, port) {
         this.app = express_1.default();
@@ -15,6 +16,7 @@ class App {
         this.initializeMiddlewares();
         this.initializeControllers(controllers);
         this.connectToDatabase();
+        this.initializeErrorHandling();
     }
     initializeMiddlewares() {
         this.app.use(cors_1.default({ credentials: true, origin: true }));
@@ -26,6 +28,9 @@ class App {
         controllers.forEach((controller) => {
             this.app.use('/', controller.router);
         });
+    }
+    initializeErrorHandling() {
+        this.app.use(Middleware_1.errorMiddleware);
     }
     connectToDatabase() {
         mongoose_1.default

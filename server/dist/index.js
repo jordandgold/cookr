@@ -10,6 +10,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const App_1 = __importDefault(require("./App"));
 const Controllers_1 = require("./Controllers");
 const app = new App_1.default([
+    new Controllers_1.AuthController(),
     new Controllers_1.RecipesController(),
 ], 5000);
 app.listen();
