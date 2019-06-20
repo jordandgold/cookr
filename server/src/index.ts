@@ -4,10 +4,11 @@
 // 3 read node best practices in https://github.com/i0natan/nodebestpractices
 
 import App from './App';
-import { RecipesController }  from './Controllers';
+import { RecipesController, AuthController }  from './Controllers';
  
 const app = new App(
   [
+    new AuthController(),
     new RecipesController(),
   ],
   5000,

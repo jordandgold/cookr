@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IRecipe } from 'Types'
+import { IRecipe } from '../Types'
 
 const recipeSchema = new mongoose.Schema({
     author: String,

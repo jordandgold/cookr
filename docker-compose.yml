@@ -1,7 +1,9 @@
 version: '3'
 services:
-  # postgres:
-  #   image: 'postgres:latest'
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
   nginx:
     restart: always
     build:
@@ -16,12 +18,6 @@ services:
     volumes:
       - /app/node_modules
       - ./server:/app
-    environment:
-      - PGUSER=postgres
-      - PGHOST=postgres
-      - PGDATABASE=postgres
-      - PGPASSWORD=postgres_password
-      - PGPORT=5432
   client:
     build:
       dockerfile: Dockerfile.dev

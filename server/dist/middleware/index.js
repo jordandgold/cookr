@@ -1,5 +1,7 @@
 "use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
-const common_1 = require("./common");
-exports.default = [common_1.handleCors, common_1.handleBodyRequestParsing, common_1.handleCompression];
+__export(require("./errorHandling"));
 //# sourceMappingURL=index.js.map
