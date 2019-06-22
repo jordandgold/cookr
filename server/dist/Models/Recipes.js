@@ -11,6 +11,7 @@ const recipeSchema = new mongoose_1.default.Schema({
             name: String
         }],
     name: String,
+    authorId: String
 });
 exports.recipeModel = mongoose_1.default.model('Recipe', recipeSchema);
 //# sourceMappingURL=Recipes.js.map

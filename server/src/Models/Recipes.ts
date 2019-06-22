@@ -8,6 +8,7 @@ const recipeSchema = new mongoose.Schema({
         name: String
     }],
     name: String,
+    authorId: String
   });
 
   export const recipeModel = mongoose.model<IRecipe & mongoose.Document>('Recipe', recipeSchema)

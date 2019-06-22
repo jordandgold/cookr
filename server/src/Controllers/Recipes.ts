@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { recipeModel } from '../Models'
-import { IController, IRecipe } from '../Types'
+import { IController, IRecipe, IRequestWithUser } from '../Types'
+import { authMiddleware } from '../Middleware'
 
 export class RecipesController implements IController {
     public path = '/recipes'
@@ -12,7 +13,7 @@ export class RecipesController implements IController {
 
       public intializeRoutes() {
         this.router.get(this.path, this.getAllRecipes);
-        this.router.post(this.path, this.createRecipe);
+        this.router.post(this.path, authMiddleware, this.createRecipe);
       }
 
       getAllRecipes = (request: express.Request, response: express.Response) => {
@@ -21,11 +22,14 @@ export class RecipesController implements IController {
         })
       }
 
-      createRecipe = (request: express.Request, response: express.Response) => {
+      createRecipe = (request: IRequestWithUser, response: express.Response) => {
         const recipe: IRecipe = request.body
-        const createdRecipe = new recipeModel(recipe)
-        createdRecipe.save().then((savedRecipe: IRecipe) => {
-            response.send(savedRecipe)
-        })
+        if (request.user) {
+          recipe.authorId = request.user._id
+          const createdRecipe = new recipeModel(recipe)
+          createdRecipe.save().then((savedRecipe: IRecipe) => {
+              response.send(savedRecipe)
+          })
+        }
       }
 }
