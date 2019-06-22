@@ -9,6 +9,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = __importStar(require("express"));
 const Models_1 = require("../Models");
+const Middleware_1 = require("../Middleware");
 class RecipesController {
     constructor() {
         this.path = '/recipes';
@@ -20,16 +21,19 @@ class RecipesController {
         };
         this.createRecipe = (request, response) => {
             const recipe = request.body;
-            const createdRecipe = new Models_1.recipeModel(recipe);
-            createdRecipe.save().then((savedRecipe) => {
-                response.send(savedRecipe);
-            });
+            if (request.user) {
+                recipe.authorId = request.user._id;
+                const createdRecipe = new Models_1.recipeModel(recipe);
+                createdRecipe.save().then((savedRecipe) => {
+                    response.send(savedRecipe);
+                });
+            }
         };
         this.intializeRoutes();
     }
     intializeRoutes() {
         this.router.get(this.path, this.getAllRecipes);
-        this.router.post(this.path, this.createRecipe);
+        this.router.post(this.path, Middleware_1.authMiddleware, this.createRecipe);
     }
 }
 exports.RecipesController = RecipesController;

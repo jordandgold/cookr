@@ -5,7 +5,9 @@
 
 import App from './App';
 import { RecipesController, AuthController }  from './Controllers';
+import dotenv from 'dotenv';
  
+dotenv.config()
 const app = new App(
   [
     new AuthController(),

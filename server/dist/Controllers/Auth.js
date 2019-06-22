@@ -21,6 +21,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt = __importStar(require("bcrypt"));
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Models_1 = require("../Models");
 const Middleware_1 = require("../Middleware");
 class AuthController {
@@ -30,15 +31,19 @@ class AuthController {
         this.user = Models_1.userModel;
         this.registration = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const userData = request.body;
-            console.log(userData);
             if (yield this.user.findOne({ email: userData.email })) {
                 next(new Middleware_1.UserWithThatEmailAlreadyExistsException(userData.email));
             }
             else {
-                const hashedPassword = yield bcrypt.hash(userData.password, 10);
-                const user = yield this.user.create(Object.assign({}, userData, { password: hashedPassword, _id: new mongoose_1.default.Types.ObjectId() }));
-                user.password = '';
-                response.send(user);
+                try {
+                    const hashedPassword = yield bcrypt.hash(userData.password, 10);
+                    const user = yield this.user.create(Object.assign({}, userData, { password: hashedPassword, _id: new mongoose_1.default.Types.ObjectId() }));
+                    const tokenData = this.createToken(user);
+                    response.send({ data: { key: tokenData.token } });
+                }
+                catch (error) {
+                    next(error);
+                }
             }
         });
         this.loggingIn = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
@@ -47,8 +52,8 @@ class AuthController {
             if (user) {
                 const isPasswordMatching = yield bcrypt.compare(logInData.password, user.password);
                 if (isPasswordMatching) {
-                    user.password = '';
-                    response.send(user);
+                    const tokenData = this.createToken(user);
+                    response.send({ data: { key: tokenData.token } });
                 }
                 else {
                     next(new Middleware_1.WrongCredentialsException());
@@ -63,6 +68,17 @@ class AuthController {
     initializeRoutes() {
         this.router.post(`${this.path}/register`, this.registration);
         this.router.post(`${this.path}/login`, this.loggingIn);
+    }
+    createToken(user) {
+        const expiresIn = 60 * 60; // an hour
+        const secret = process.env.JWT_SECRET;
+        const dataStoredInToken = {
+            _id: user._id,
+        };
+        return {
+            expiresIn,
+            token: jsonwebtoken_1.default.sign(dataStoredInToken, secret, { expiresIn }),
+        };
     }
 }
 exports.AuthController = AuthController;

@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcrypt'
 import express from 'express'
 import mongoose from 'mongoose'
-import { IController, IUser, ILogin } from '../Types'
+import jwt from 'jsonwebtoken'
+import { IController, IUser, ILogin, IDataStoredInToken, ITokenData } from '../Types'
 import { userModel } from '../Models'
 import { UserWithThatEmailAlreadyExistsException, WrongCredentialsException } from '../Middleware'
 
@@ -21,23 +22,25 @@ export class AuthController implements IController {
 
     private registration = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const userData: IUser = request.body;
-        console.log(userData);
         
         if (
             await this.user.findOne({ email: userData.email })
         ) {
             next(new UserWithThatEmailAlreadyExistsException(userData.email));
         } else {
-            const hashedPassword = await bcrypt.hash(userData.password, 10);
-            const user = await this.user.create({
-                ...userData,
-                password: hashedPassword,
-                _id: new mongoose.Types.ObjectId()
-            });
+            try {
+                const hashedPassword = await bcrypt.hash(userData.password, 10);
+                const user = await this.user.create({
+                    ...userData,
+                    password: hashedPassword,
+                    _id: new mongoose.Types.ObjectId()
+                });
 
-            user.password = '';
-
-            response.send(user);
+                const tokenData = this.createToken(user);    
+                response.send({ data: { key: tokenData.token }});
+            } catch (error) {
+                next(error)
+            }
         }
     }
 
@@ -47,13 +50,26 @@ export class AuthController implements IController {
         if (user) {
           const isPasswordMatching = await bcrypt.compare(logInData.password, user.password);
           if (isPasswordMatching) {
-            user.password = '';
-            response.send(user);
+            const tokenData = this.createToken(user);
+            response.send({ data: { key: tokenData.token }});
           } else {
             next(new WrongCredentialsException());
           }
         } else {
           next(new WrongCredentialsException());
         }
+    }
+
+    private createToken(user: IUser) {
+        const expiresIn = 60 * 60; // an hour
+        const secret = process.env.JWT_SECRET!;
+        const dataStoredInToken: IDataStoredInToken = {
+            _id: user._id,
+        };
+
+        return {
+            expiresIn,
+            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
+        };
     }
 }
