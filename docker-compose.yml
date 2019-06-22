@@ -18,6 +18,8 @@ services:
     volumes:
       - /app/node_modules
       - ./server:/app
+    environment:
+      - NODE_ENV=development
   client:
     build:
       dockerfile: Dockerfile.dev
