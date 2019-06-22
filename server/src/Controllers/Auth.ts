@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 import { IController, IUser, ILogin, IDataStoredInToken, ITokenData } from '../Types'
 import { userModel } from '../Models'
-import { UserWithThatEmailAlreadyExistsException, WrongCredentialsException } from '../Middleware'
+import { EmailOrPasswordNotSufficient, UserWithThatEmailAlreadyExistsException, WrongCredentialsException } from '../Middleware'
+import { check, validationResult } from 'express-validator'
 
 export class AuthController implements IController {
     public path = '/auth'
@@ -16,11 +17,16 @@ export class AuthController implements IController {
     }
 
     private initializeRoutes() {
-        this.router.post(`${this.path}/register`, this.registration);
-        this.router.post(`${this.path}/login`, this.loggingIn);
+        this.router.post(`${this.path}/register`, this.validateRegistration(), this.registration);
+        this.router.post(`${this.path}/login`, this.validateLogin(), this.loggingIn);
     }
 
     private registration = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            next( new EmailOrPasswordNotSufficient())
+            return
+          }
         const userData: IUser = request.body;
         
         if (
@@ -58,6 +64,20 @@ export class AuthController implements IController {
         } else {
           next(new WrongCredentialsException());
         }
+    }
+
+    private validateRegistration() {
+        return [
+            check('email').isEmail(),
+            check('password').isLength({ min: 5 })
+        ]
+    }
+
+    private validateLogin() {
+        return [
+            check('email').isString(),
+            check('password').isString()
+        ]
     }
 
     private createToken(user: IUser) {
