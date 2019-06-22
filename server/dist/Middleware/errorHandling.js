@@ -19,6 +19,12 @@ class UserWithThatEmailAlreadyExistsException extends HttpException {
     }
 }
 exports.UserWithThatEmailAlreadyExistsException = UserWithThatEmailAlreadyExistsException;
+class EmailOrPasswordNotSufficient extends HttpException {
+    constructor() {
+        super(422, `Password must be at least 5 characters long and you must submit a valid email`);
+    }
+}
+exports.EmailOrPasswordNotSufficient = EmailOrPasswordNotSufficient;
 class WrongCredentialsException extends HttpException {
     constructor() {
         super(401, 'Wrong credentials provided');

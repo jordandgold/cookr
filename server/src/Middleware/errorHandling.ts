@@ -23,6 +23,12 @@ export class UserWithThatEmailAlreadyExistsException extends HttpException {
     }
 }
 
+export class EmailOrPasswordNotSufficient extends HttpException {
+  constructor() {
+    super(422, `Password must be at least 5 characters long and you must submit a valid email`);
+  }
+}
+
 export class WrongCredentialsException extends HttpException {
     constructor() {
       super(401, 'Wrong credentials provided');

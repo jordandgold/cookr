@@ -24,12 +24,18 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Models_1 = require("../Models");
 const Middleware_1 = require("../Middleware");
+const express_validator_1 = require("express-validator");
 class AuthController {
     constructor() {
         this.path = '/auth';
         this.router = express_1.default.Router();
         this.user = Models_1.userModel;
         this.registration = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
+            const errors = express_validator_1.validationResult(request);
+            if (!errors.isEmpty()) {
+                next(new Middleware_1.EmailOrPasswordNotSufficient());
+                return;
+            }
             const userData = request.body;
             if (yield this.user.findOne({ email: userData.email })) {
                 next(new Middleware_1.UserWithThatEmailAlreadyExistsException(userData.email));
@@ -66,8 +72,20 @@ class AuthController {
         this.initializeRoutes();
     }
     initializeRoutes() {
-        this.router.post(`${this.path}/register`, this.registration);
-        this.router.post(`${this.path}/login`, this.loggingIn);
+        this.router.post(`${this.path}/register`, this.validateRegistration(), this.registration);
+        this.router.post(`${this.path}/login`, this.validateLogin(), this.loggingIn);
+    }
+    validateRegistration() {
+        return [
+            express_validator_1.check('email').isEmail(),
+            express_validator_1.check('password').isLength({ min: 5 })
+        ];
+    }
+    validateLogin() {
+        return [
+            express_validator_1.check('email').isString(),
+            express_validator_1.check('password').isString()
+        ];
     }
     createToken(user) {
         const expiresIn = 60 * 60; // an hour
