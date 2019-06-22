@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -9,6 +17,7 @@ const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const compression_1 = __importDefault(require("compression"));
 const Middleware_1 = require("./Middleware");
+const Utils_1 = require("./Utils");
 class App {
     constructor(controllers, port) {
         this.app = express_1.default();
@@ -35,7 +44,14 @@ class App {
     connectToDatabase() {
         mongoose_1.default
             .connect('mongodb://mongo:27017/api', { useNewUrlParser: true })
-            .then(() => console.log('MongoDB Connected'))
+            .then(() => __awaiter(this, void 0, void 0, function* () {
+            console.log(process.env.NODE_ENV);
+            if (process.env.NODE_ENV === 'development') {
+                yield Utils_1.saveMockUser();
+                yield Utils_1.saveMockRecipes();
+            }
+            console.log('MongoDB Connected');
+        }))
             .catch((err) => console.log(err));
     }
     listen() {

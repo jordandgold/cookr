@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 import express from 'express'
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
