@@ -15,6 +15,7 @@ import Nav from "react-bootstrap/Nav";
 
 import Home from "./components/Home";
 import AddRecipe from "./components/AddRecipe";
+import UserRegistrationForm from "./components/UserRegistrationForm";
 
 interface IAppState {
   isAddingRecipe: boolean;
@@ -61,6 +62,7 @@ class App extends Component<{}, IAppState> {
           <div className="main-container">
             <Route path="/" exact component={Home} />
             <Route path="/add-recipe" component={AddRecipe} />
+            <Route path="/register" component={UserRegistrationForm} />
           </div>
         </Router>
       </div>
